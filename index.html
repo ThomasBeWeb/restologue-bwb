@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="FR">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Notre Restaurant</title>
+  <!-- Bootstrap core CSS-->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- Page level plugin CSS-->
+  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin.css" rel="stylesheet">
+
+          <script src="vendor/jquery/jquery.min.js"></script>
+        <script>
+
+            $.ajax({
+                type: "GET",
+                url: "http://api.users.bwb:8282/connected",
+                statusCode: {
+                    200: function () {
+                    },
+                    401: function () {
+                        window.location.href = "./connexion.html";
+                    }
+                }
+            });
+        </script>
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="index.html">Administration</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
+              <i class="fa fa-plus"></i>
+              <div class="col-lg-12">
+                <div class="input-group">
+                    <input type="text" class="form-control nav-link-text" placeholder="Ajoutez une carte" id="nouveauNomCarte">
+                    <span class="input-group-btn">
+                      <button class="btn btn-success nav-link-text" type="button" onclick="addCarte();">+</button>
+                    </span>
+                  </div>
+                </div>
+                <hr>
+              <i class="fa fa-fw fa-cutlery"></i>
+           <span class="nav-link-text">Liste des cartes</span>
+          </a>
+         <ul class="sidenav-second-level collapse" id="collapseMulti">
+          </ul>
+        </li>
+      </ul>
+      
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+    
+        <li class="nav-item">
+          <form class="form-inline my-2 my-lg-0 mr-lg-2">
+            <div class="input-group">
+              <input class="form-control" type="text" placeholder="Recherchez">
+              <span class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </form>
+        </li>
+       
+      </ul>
+    </div>
+  </nav><!-- ./END NAVIGATION-->
+  
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <h2 class="text-center">NOTRE RESTAURANT</h2>
+      <hr>
+        <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm">
+                  <div class="col-12">
+                      <form action="/action_page.php">
+                        <div class="form-group">
+                         
+                          <input type="text" class="form-control" id="ajoutCarte" placeholder="Nom de la carte" disabled>
+                        </div>
+                        <button class="btn btn-danger btn-modifier" type="button" data-toggle="modal" data-target="#deleteCarte">Supprimer</button>
+                        
+                      </form>
+                </div>
+              </div>
+              <div class="col-sm">
+                  <div class="col-12">
+                      <label>Mes menus :</label>
+                      <table class="table">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">#id</th>
+                              <th scope="col">Menus</th>
+                              <th>Supprimer</th>
+                            </tr>
+                          </thead>
+                          <tbody id="listeMenusCarte">
+                            </tbody>
+                        </table>
+              
+              
+                          <!-- Modal ADD MENU-->
+                          <div class="modal fade" id="add_menu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title text-center" id="exampleModalLabel">Ajouter un menu :</h5>
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <label>Nom du Menu :</label>
+                                      <input type="text" class="form-control" id="nomDuMenu1" placeholder="Nom du Menu">
+                                      <hr>
+                                      <label>Entrée :</label>
+                                      <input type="text" class="form-control" id="nomEntree1" placeholder="Nom de l'entrée">
+                                      <input type="text" class="form-control" id="prixEntree1" placeholder="Prix de l'entrée €">
+                                      <hr>
+                                      <label>Plat :</label>
+                                      <input type="text" class="form-control" id="nomPlat1" placeholder="Nom du plat">
+                                      <input type="text" class="form-control" id="prixPlat1" placeholder="Prix du plat €">
+                                      <hr>
+                                      <label>Dessert :</label>
+                                      <input type="text" class="form-control" id="nomDessert1" placeholder="Nom du dessert">
+                                      <input type="text" class="form-control" id="prixDessert1" placeholder="Prix du dessert €">
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="addMenu();">Ajouter</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Modal Modifier MENU-->
+                          <div class="modal fade" id="modifier_menu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title text-center" id="exampleModalLabel">Modifier le menu :</h5>
+
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                    <label>Nom de la carte :</label>
+                                    <input type="text" class="form-control" id="" placeholder="Nom de la carte">
+                                    <hr>
+                                    <label>Entrée :</label>
+                                    <input type="text" class="form-control" id="" placeholder="Nom de l'entrée">
+                                    <input type="text" class="form-control" id="" placeholder="Prix de l'entrée €">
+                                    <hr>
+                                    <label>Plat :</label>
+                                    <input type="text" class="form-control" id="" placeholder="Nom du plat">
+                                    <input type="text" class="form-control" id="" placeholder="Prix du plat €">
+                                    <hr>
+                                    <label>Dessert :</label>
+                                    <input type="text" class="form-control" id="" placeholder="Nom du dessert">
+                                    <input type="text" class="form-control" id="" placeholder="Prix du dessert €">
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                  <button type="button" class="btn btn-primary" data-dismiss="modal">Modifier</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                           <!-- Modal Modifier CARTE-->
+                           <div class="modal fade" id="modifier_carte" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title text-center" id="exampleModalLabel">Modifier le nom de la carte:</h5>
+
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                    <label>Nom de la carte :</label>
+                                    <input type="text" class="form-control" id="">
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                  <button type="button" class="btn btn-primary" data-dismiss="modal">Modifier</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    
+  
+                            <!-- Modal DELETE Carte-->
+                            <div class="modal fade" id="deleteCarte" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title text-center" id="exampleModalLabel">Attention</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p class="text-center">Voulez-vous vraiment supprimer cet élement ?</p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"  id="modalSuppCarte">Supprimer</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div><!--./END MODAL DELETE-->
+                            
+                              <!-- Modal DELETE Menu-->
+                            <div class="modal fade" id="delete_menu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title text-center" id="exampleModalLabel">Attention</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p class="text-center">Voulez-vous vraiment supprimer cet élement ?</p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"  id="modalSuppMenu" onclick="deleteMenu()">Supprimer</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div><!--./END MODAL DELETE-->
+                              
+                            </div><!--./END COL 12-->
+                          </div><!--./END COL SM-->
+                        </div><!--./END ROW-->
+                      </div><!--./END CONTAINER FUILD-->
+<hr>
+            
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        
+        <div class="card-header">
+            
+          <i class="fa fa-table text-left"></i> Liste des menus :<button class="btn btn-success btn-add" type="button" data-toggle="modal" data-target="#add_menu">Ajouter un menu</button></div>
+          
+        <div class="card-body">
+            
+          <div class="table-responsive">
+             <table class="table">
+                          <thead class="thead-dark">
+                            <tr>
+                            
+                              <th scope="col">Menu</th>
+                              <th scope="col">Entrée</th>
+                              <th scope="col">Prix</th>
+                              <th scope="col">Plat</th>
+                              <th scope="col">Prix</th>
+                              <th scope="col">Dessert</th>
+                              <th scope="col">Prix</th>
+                              <th>Modifier</th>
+                              <th>Supprimer</th>
+                              <th>Ajouter</th>
+                            </tr>
+                          </thead>
+                          <tbody id="ligneMenu">
+                            </tbody>
+                        </table>
+              
+              
+          </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+   
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+
+   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+   <!-- Core plugin JavaScript-->
+   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+   <!-- Page level plugin JavaScript-->
+   <script src="vendor/chart.js/Chart.min.js"></script>
+   <script src="vendor/datatables/jquery.dataTables.js"></script>
+   <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+   <!-- Custom scripts for all pages-->
+   <script src="js/sb-admin.min.js"></script>
+   <!-- Custom scripts for this page-->
+   <script src="js/sb-admin-datatables.min.js"></script>
+   <script src="js/sb-admin-charts.min.js"></script>
+  
+    <script src="./js/app.js" type="text/javascript"></script>
+  </div>
+</body>
+
+</html>
